@@ -1,0 +1,8 @@
+/build
+
+mipmap*
+xml/
+drawable*/
+values*/
+
+Example*

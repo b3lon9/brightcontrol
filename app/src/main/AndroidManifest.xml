@@ -15,7 +15,7 @@
             android:name="com.b3lon9.app.brightcontrol.MainActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent"
+            android:theme="@android:style/Theme.Dialog"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

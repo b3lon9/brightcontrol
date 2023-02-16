@@ -1,6 +1,7 @@
 package com.b3lon9.app.brightcontrol;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,5 +63,22 @@ public class MainActivity extends Activity {
 
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("neander", "onPause()");
+        super.finish();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("neander", "onStop() : packagename" + getPackageName());
+
+        /*ActivityManager am = (ActivityManager)getSystemService(Activity.ACTIVITY_SERVICE);
+        am.killBackgroundProcesses(getPackageName());
+        android.os.Process.killProcess(android.os.Process.myPid());*/
     }
 }

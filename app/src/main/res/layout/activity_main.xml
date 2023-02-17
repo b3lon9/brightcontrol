@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    tools:context=".MainActivity"
+    android:background="@drawable/cardview"
+
+    android:paddingTop="@dimen/base_padding_top"
+    android:paddingBottom="@dimen/base_padding_bottom"
+    android:orientation="vertical"
     android:gravity="center"
-    android:orientation="vertical">
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/label"
@@ -25,5 +28,8 @@
         android:progressDrawable="@drawable/seekbar_custom"
         android:thumb="@drawable/seekbar_custom_thumb" />
 
-
+    <Button
+        android:id="@+id/testbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

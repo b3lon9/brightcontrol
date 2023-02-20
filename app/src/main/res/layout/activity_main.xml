@@ -23,13 +23,9 @@
         android:id="@+id/seekbar"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:max="100"
+        android:max="255"
         android:min="0"
         android:progressDrawable="@drawable/seekbar_custom"
         android:thumb="@drawable/seekbar_custom_thumb" />
 
-    <Button
-        android:id="@+id/testbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>

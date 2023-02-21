@@ -1,7 +1,6 @@
 package com.b3lon9.app.brightcontrol;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -9,14 +8,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
-
-import java.util.Locale;
 
 
 public class MainActivity extends Activity {
@@ -39,9 +34,18 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        // 필수
-        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.System.canWrite(this)) {
+                // Enable write Permission
+                Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+            } else {
+                Log.d((TAG), "권한 설정");
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        }
     }
 
     @Override
@@ -75,29 +79,13 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams1.width = (int)(widthPixels * 0.8);
         seekBar.setLayoutParams(layoutParams1);
-        /*findViewById(R.id.testbtn).setOnClickListener(view -> {
-            WindowManager.LayoutParams layout = getWindow().getAttributes();
-            layout.screenBrightness = 1F;
-            getWindow().setAttributes(layout);
-        });*/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Settings.System.canWrite(this)) {
-                // Enable write Permission
-                Log.d(TAG, "SDK can write...");
-            } else {
-                Log.d((TAG), "권한 설정");
-                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                intent.setData(Uri.parse("package:" + getPackageName()));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        }
 
         try {
             seekBar.setProgress(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
         } catch (Settings.SettingNotFoundException e) {
             throw new RuntimeException(e);
         }
+
         seekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);
     }
 
@@ -114,7 +102,6 @@ public class MainActivity extends Activity {
                         i
                 );
             }
-
         }
 
         @Override

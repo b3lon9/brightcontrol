@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
@@ -87,6 +88,21 @@ public class MainActivity extends Activity {
         }
 
         seekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);
+
+        // Button
+        findViewById(R.id.btn_dec).setOnClickListener((view) -> {
+            changeBrightNess(1);
+            seekBar.setProgress(1);
+        });
+
+        findViewById(R.id.btn_auto).setOnClickListener((view) -> {
+            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+        });
+
+        findViewById(R.id.btn_inc).setOnClickListener((view) -> {
+            changeBrightNess(255);
+            seekBar.setProgress(255);
+        });
     }
 
 
@@ -96,11 +112,7 @@ public class MainActivity extends Activity {
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
             if (i > 0 && i <= 255) {
                 Log.d(TAG, "change Brightness value : " + i);
-                Settings.System.putInt(
-                        getContentResolver(),
-                        Settings.System.SCREEN_BRIGHTNESS,
-                        i
-                );
+                changeBrightNess(i);
             }
         }
 
@@ -114,4 +126,12 @@ public class MainActivity extends Activity {
 
         }
     };
+
+    private void changeBrightNess(int level) {
+        Settings.System.putInt(
+                getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS,
+                level
+        );
+    }
 }

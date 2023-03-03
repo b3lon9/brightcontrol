@@ -1,6 +1,7 @@
 package com.b3lon9.app.brightcontrol;
 
 import android.app.Activity;
+import android.app.appsearch.observer.ObserverCallback;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -10,9 +11,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainActivity extends Activity {
@@ -96,7 +102,11 @@ public class MainActivity extends Activity {
         });
 
         findViewById(R.id.btn_auto).setOnClickListener((view) -> {
-            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+
+            Single.fromCallable(() -> Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(value -> changeBrightNess(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS)));
         });
 
         findViewById(R.id.btn_inc).setOnClickListener((view) -> {

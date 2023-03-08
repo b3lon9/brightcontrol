@@ -111,20 +111,18 @@ public class MainActivity extends Activity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(value -> {
-                        Log.d(TAG, "try (1) : " + Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        Log.d(TAG, "try (1) : " + Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        Log.d(TAG, "try (1) : " + Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        changeBrightNess(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        Thread.sleep(1000);
-                        Log.d(TAG, "try (2) : " + Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        changeBrightNess(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        Thread.sleep(1000);
-                        Log.d(TAG, "try (3) : " + Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        changeBrightNess(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        Thread.sleep(1000);
-                        Log.d(TAG, "try (4) : " + Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
-                        changeBrightNess(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
+                        int c = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+                        int count = 0;
+                        while (true) {
+                            count += 50;
+                            Thread.sleep(count);
+                            Log.d(TAG, String.format("count : %d", count));
+                            Log.d(TAG, "bright level : " + Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS));
 
+                            if (c != Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS)) {
+                                break;
+                            }
+                        }
                     });
         });
 
